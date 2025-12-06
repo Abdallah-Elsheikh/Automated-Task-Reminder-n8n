@@ -5,7 +5,7 @@ This repository contains an automation workflow built using **n8n**. The system 
 
 ## 📂 Workflow Architecture
 
-(workflow-diagram.png)
+![Workflow Diagram](workflow-diagram.png.PNG)
 
 ### Logic Flow
 The workflow consists of four main stages:
