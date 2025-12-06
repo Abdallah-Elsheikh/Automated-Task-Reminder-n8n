@@ -1,0 +1,160 @@
+{
+  "name": "My workflow",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "triggerAtHour": 9
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.3,
+      "position": [
+        -400,
+        0
+      ],
+      "id": "c1c73f1d-fe56-4dab-be89-481968b8d1b8",
+      "name": "Schedule Trigger"
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "18Df_ZWbCJTBSRokUNvp-2ZeMY6cKfIVdwMRWk0fhIcw",
+          "mode": "list",
+          "cachedResultName": "Daily Tasks",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/18Df_ZWbCJTBSRokUNvp-2ZeMY6cKfIVdwMRWk0fhIcw/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "الورقة1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/18Df_ZWbCJTBSRokUNvp-2ZeMY6cKfIVdwMRWk0fhIcw/edit#gid=0"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        -64,
+        -48
+      ],
+      "id": "dcc3abb6-6725-45b0-954e-bc388ba79343",
+      "name": "Get row(s) in sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "AcGPY4EhIEyBQePv",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "9babbe9d-169a-4475-89e7-5873d45f43df",
+              "leftValue": "={{$json[\"Done\"]}}",
+              "rightValue": "NO",
+              "operator": {
+                "type": "string",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        288,
+        -112
+      ],
+      "id": "78f10de3-7884-4ace-bca2-5d384b244797",
+      "name": "If"
+    },
+    {
+      "parameters": {
+        "sendTo": "abdallahelsheikh808@gmail.com",
+        "subject": "Your Pending Task Today",
+        "message": "=You have a pending task:  Task: {{$json[\"Task\"]}} Status: {{$json[\"Done\"]}} Date: {{$json[\"Date\"]}}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        672,
+        -176
+      ],
+      "id": "41997001-7464-4732-ae99-334fe3796c6a",
+      "name": "Send a message",
+      "webhookId": "b04d3324-af32-4eac-a01e-45ec2b0953c7",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "Oh9Tfl0wuOmQCy21",
+          "name": "Gmail account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Schedule Trigger": {
+      "main": [
+        [
+          {
+            "node": "Get row(s) in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get row(s) in sheet": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "Send a message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "a4ea776c-fb10-4150-bb5a-a3c00fa76259",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "738e7ced0ebd644c3da46131022dd68c451b9247e289b9046fd8444c3a6d8ab8"
+  },
+  "id": "8wqbuIX05oGOrXfP",
+  "tags": []
+}
